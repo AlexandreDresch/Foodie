@@ -37,7 +37,7 @@ export default function Banner({
       <Image
         width={0}
         height={0}
-        className="size-32 object-fill sm:size-36"
+        className="size-32 object-contain sm:size-36"
         sizes="100vw"
         priority
         src={image}
