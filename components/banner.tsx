@@ -1,28 +1,14 @@
 import Image from "next/image";
 
-type BaseBannerProps = {
-  variant: "base";
+interface BannerProps {
   percentage: number;
   text: string;
   image: string;
   color: string;
-  textOrientation?: never;
-};
-
-type DetailedBannerProps = {
-  variant: "detailed";
-  percentage: number;
-  text: string;
-  image: string;
-  color: string;
-  textOrientation: "left" | "right";
-};
-
-type BannerProps = BaseBannerProps | DetailedBannerProps;
+}
 
 export default function Banner({
   percentage,
-  variant,
   image,
   color,
   text,
@@ -33,16 +19,12 @@ export default function Banner({
     >
       <div className="text-white">
         <div className="flex justify-between">
-          <div className="text-base font-light">
+          <div className="mr-1 text-base font-light">
             <p>up</p>
             <p>to</p>
           </div>
 
-          <p
-            className={`text-5xl font-bold ${
-              variant === "detailed" && "text-primary"
-            }`}
-          >
+          <p className="text-5xl font-bold">
             {percentage}
             <span className="text-3xl">%</span>
           </p>
