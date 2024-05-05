@@ -45,7 +45,7 @@ export default function ProductDetails({
   }
 
   return (
-    <div className="py-5">
+    <div className="relative z-50 -mt-[1.5rem] rounded-t-xl bg-white py-5">
       <div className="flex items-center gap-2 px-5">
         <div className="relative size-6">
           <Image
