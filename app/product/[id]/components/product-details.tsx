@@ -2,6 +2,7 @@
 
 import { calculateProductTotalPrice, formatCurrency } from "@/app/utils/price";
 import Badge from "@/components/badge";
+import DeliveryInfo from "@/components/delivery-info";
 import ProductList from "@/components/product-list";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
@@ -106,31 +107,9 @@ export default function ProductDetails({
         </div>
       </div>
 
-      <Card className="mx-5 mt-6 flex justify-around py-2">
-        <div className="flex flex-col items-center">
-          <div className="flex items-center gap-2 text-muted-foreground">
-            <BikeIcon size={14} />
-            <span className="text-xs">Delivery Fee</span>
-          </div>
-
-          <p className="text-xs font-semibold">
-            {+product.restaurant.deliveryFee === 0
-              ? "Free"
-              : formatCurrency(+product.restaurant.deliveryFee)}
-          </p>
-        </div>
-
-        <div className="flex flex-col items-center">
-          <div className="flex items-center gap-2 text-muted-foreground">
-            <TimerIcon size={14} />
-            <span className="text-xs">Delivery Time</span>
-          </div>
-
-          <p className="text-xs font-semibold">
-            {product.restaurant.deliveryTimeMinutes} min
-          </p>
-        </div>
-      </Card>
+      <div className="mt-6 px-5 py-2">
+        <DeliveryInfo restaurant={product.restaurant} />
+      </div>
 
       <div className="mt-6 space-y-3 px-5">
         <h3 className="font-semibold">Description</h3>
