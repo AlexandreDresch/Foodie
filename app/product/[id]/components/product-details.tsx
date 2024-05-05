@@ -10,6 +10,7 @@ import {
   BikeIcon,
   ChevronLeftIcon,
   ChevronRightIcon,
+  ShoppingCartIcon,
   TimerIcon,
 } from "lucide-react";
 import Image from "next/image";
@@ -141,6 +142,13 @@ export default function ProductDetails({
           More from {product.restaurant.name}
         </h3>
         <ProductList products={complementaryProducts} />
+      </div>
+
+      <div className="mt-6 px-5">
+        <Button className="flex w-full gap-2">
+          <ShoppingCartIcon size={18} />
+          <span className="font-semibold">Add to Cart</span>
+        </Button>
       </div>
     </div>
   );
