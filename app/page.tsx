@@ -36,13 +36,13 @@ export default async function Home() {
         <Banner
           color="bg-[#EA1D2C]"
           percentage={30}
-          text="off pizzas"
+          text="of pizzas"
           image="/pizza.png"
         />
       </div>
 
       <div className="space-y-3 pt-6">
-        <Heading title="Our recommendation" link="" />
+        <Heading title="Our Recommendation" link="" className="px-5" />
         <ProductList products={discountProducts} />
       </div>
 
@@ -56,7 +56,11 @@ export default async function Home() {
       </div>
 
       <div className="space-y-3 py-6">
-        <Heading title="Best Restaurants" link="" />
+        <Heading
+          title="Best Restaurants"
+          link="/restaurant/recommended"
+          className="px-5"
+        />
         <RestaurantList />
       </div>
     </>

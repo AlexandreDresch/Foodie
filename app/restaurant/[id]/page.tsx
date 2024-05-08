@@ -84,7 +84,7 @@ export default async function RestaurantPage({
       </div>
 
       <div className="mt-5 space-y-2">
-        <Heading link="" title="Customer Favorites" />
+        <Heading title="Customer Favorites" className="px-5" />
 
         <ProductList products={restaurant.products} />
       </div>
@@ -92,7 +92,7 @@ export default async function RestaurantPage({
       {restaurant.categories.map((category) => {
         return (
           <div key={category.id} className="mt-5 space-y-2">
-            <Heading link="" title={category.name} />
+            <Heading title={category.name} className="px-5" />
 
             <ProductList products={category.products} />
           </div>
