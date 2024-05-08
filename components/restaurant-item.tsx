@@ -7,12 +7,16 @@ import Link from "next/link";
 
 interface RestaurantItemProps {
   restaurant: Restaurant;
+  className?: string;
 }
 
-export default function RestaurantItem({ restaurant }: RestaurantItemProps) {
+export default function RestaurantItem({
+  restaurant,
+  className,
+}: RestaurantItemProps) {
   return (
     <Link
-      className="min-w-[266px] max-w-[266px]"
+      className={`min-w-[266px] max-w-[266px] ${className}`}
       href={`/restaurant/${restaurant.id}`}
     >
       <div className="w-full space-y-3">
