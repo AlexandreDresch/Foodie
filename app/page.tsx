@@ -42,7 +42,11 @@ export default async function Home() {
       </div>
 
       <div className="space-y-3 pt-6">
-        <Heading title="Our Recommendation" link="" className="px-5" />
+        <Heading
+          title="Our Recommendation"
+          link={`/product/recommended`}
+          className="px-5"
+        />
         <ProductList products={discountProducts} />
       </div>
 
