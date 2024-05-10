@@ -21,7 +21,7 @@ export default function ProductItem({ product }: ProductItemProps) {
   return (
     <Link
       className="w-[150px] min-w-[150px] justify-self-center"
-      href={`/products/${product.id}`}
+      href={`/product/${product.id}`}
     >
       <div className="w-full space-y-2">
         <div className="relative aspect-square w-full">
