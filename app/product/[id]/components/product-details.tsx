@@ -1,21 +1,26 @@
 "use client";
 
+import { CartContext } from "@/app/context/cart";
 import { calculateProductTotalPrice, formatCurrency } from "@/app/utils/price";
 import Badge from "@/components/badge";
+import Cart from "@/components/cart";
 import DeliveryInfo from "@/components/delivery-info";
 import ProductList from "@/components/product-list";
 import { Button } from "@/components/ui/button";
-import { Card } from "@/components/ui/card";
+import {
+  Sheet,
+  SheetContent,
+  SheetHeader,
+  SheetTitle,
+} from "@/components/ui/sheet";
 import { Prisma } from "@prisma/client";
 import {
-  BikeIcon,
   ChevronLeftIcon,
   ChevronRightIcon,
   ShoppingCartIcon,
-  TimerIcon,
 } from "lucide-react";
 import Image from "next/image";
-import { useState } from "react";
+import { useContext, useState } from "react";
 
 interface ProductDetailsProps {
   product: Prisma.ProductGetPayload<{
@@ -35,6 +40,8 @@ export default function ProductDetails({
   complementaryProducts,
 }: ProductDetailsProps) {
   const [quantity, setQuantity] = useState(1);
+  const [isCartOpen, setIsCartOpen] = useState(false);
+  const { addProductToCart } = useContext(CartContext);
 
   function handleDecreaseQuantity() {
     if (quantity > 1) {
@@ -46,89 +53,108 @@ export default function ProductDetails({
     setQuantity((currentState) => currentState + 1);
   }
 
+  function handleAddProductToCart() {
+    addProductToCart(product, quantity);
+    setIsCartOpen(true);
+  }
+
   return (
-    <div className="relative z-50 -mt-[1.5rem] rounded-t-xl bg-white py-5">
-      <div className="flex items-center gap-2 px-5">
-        <div className="relative size-6">
-          <Image
-            src={product.restaurant.imageUrl}
-            alt={product.restaurant.name}
-            fill
-            className="rounded-full object-cover"
-          />
+    <>
+      <div className="relative z-50 -mt-[1.5rem] rounded-t-xl bg-white py-5">
+        <div className="flex items-center gap-2 px-5">
+          <div className="relative size-6">
+            <Image
+              src={product.restaurant.imageUrl}
+              alt={product.restaurant.name}
+              fill
+              className="rounded-full object-cover"
+            />
+          </div>
+
+          <span className="text-xs text-muted-foreground">
+            {product.restaurant.name}
+          </span>
         </div>
 
-        <span className="text-xs text-muted-foreground">
-          {product.restaurant.name}
-        </span>
-      </div>
+        <h1 className="mb-2 mt-1 px-5 text-xl font-semibold">{product.name}</h1>
 
-      <h1 className="mb-2 mt-1 px-5 text-xl font-semibold">{product.name}</h1>
+        <div className="flex justify-between px-5">
+          <div>
+            <div className="flex items-center gap-2">
+              <h2 className="text-xl font-semibold">
+                {formatCurrency(calculateProductTotalPrice(product))}
+              </h2>
 
-      <div className="flex justify-between px-5">
-        <div>
-          <div className="flex items-center gap-2">
-            <h2 className="text-xl font-semibold">
-              {formatCurrency(calculateProductTotalPrice(product))}
-            </h2>
+              {product.discountPercentage > 0 && (
+                <Badge percentage={product.discountPercentage} />
+              )}
+            </div>
 
             {product.discountPercentage > 0 && (
-              <Badge percentage={product.discountPercentage} />
+              <p className="text-xs text-muted-foreground line-through">
+                {formatCurrency(+product.price)}
+              </p>
             )}
           </div>
 
-          {product.discountPercentage > 0 && (
-            <p className="text-xs text-muted-foreground line-through">
-              {formatCurrency(+product.price)}
-            </p>
-          )}
+          <div className="flex items-center gap-3 text-center">
+            <Button
+              size="icon"
+              variant="ghost"
+              className="border border-solid border-muted-foreground transition-colors hover:border-white hover:bg-primary hover:text-white"
+              onClick={handleDecreaseQuantity}
+            >
+              <ChevronLeftIcon />
+            </Button>
+
+            <span className="w-4">{quantity}</span>
+
+            <Button
+              size="icon"
+              variant="ghost"
+              className="border border-solid border-muted-foreground transition-colors hover:border-white hover:bg-primary hover:text-white"
+              onClick={handleIncreaseQuantity}
+            >
+              <ChevronRightIcon />
+            </Button>
+          </div>
         </div>
 
-        <div className="flex items-center gap-3 text-center">
-          <Button
-            size="icon"
-            variant="ghost"
-            className="border border-solid border-muted-foreground transition-colors hover:border-white hover:bg-primary hover:text-white"
-            onClick={handleDecreaseQuantity}
-          >
-            <ChevronLeftIcon />
-          </Button>
+        <div className="mt-6 px-5 py-2">
+          <DeliveryInfo restaurant={product.restaurant} />
+        </div>
 
-          <span className="w-4">{quantity}</span>
+        <div className="mt-6 space-y-3 px-5">
+          <h3 className="font-semibold">Description</h3>
+          <p className="text-sm text-muted-foreground">{product.description}</p>
+        </div>
 
+        <div className="mt-6 space-y-3">
+          <h3 className="px-5 font-semibold">
+            More from {product.restaurant.name}
+          </h3>
+          <ProductList products={complementaryProducts} />
+        </div>
+
+        <div className="mt-6 px-5">
           <Button
-            size="icon"
-            variant="ghost"
-            className="border border-solid border-muted-foreground transition-colors hover:border-white hover:bg-primary hover:text-white"
-            onClick={handleIncreaseQuantity}
+            className="flex w-full gap-2"
+            onClick={handleAddProductToCart}
           >
-            <ChevronRightIcon />
+            <ShoppingCartIcon size={18} />
+            <span className="font-semibold">Add to Cart</span>
           </Button>
         </div>
       </div>
 
-      <div className="mt-6 px-5 py-2">
-        <DeliveryInfo restaurant={product.restaurant} />
-      </div>
-
-      <div className="mt-6 space-y-3 px-5">
-        <h3 className="font-semibold">Description</h3>
-        <p className="text-sm text-muted-foreground">{product.description}</p>
-      </div>
-
-      <div className="mt-6 space-y-3">
-        <h3 className="px-5 font-semibold">
-          More from {product.restaurant.name}
-        </h3>
-        <ProductList products={complementaryProducts} />
-      </div>
-
-      <div className="mt-6 px-5">
-        <Button className="flex w-full gap-2">
-          <ShoppingCartIcon size={18} />
-          <span className="font-semibold">Add to Cart</span>
-        </Button>
-      </div>
-    </div>
+      <Sheet open={isCartOpen} onOpenChange={setIsCartOpen}>
+        <SheetContent className="w-[85vw]">
+          <SheetHeader className="text-left">
+            <SheetTitle>Cart</SheetTitle>
+          </SheetHeader>
+          <Cart />
+        </SheetContent>
+      </Sheet>
+    </>
   );
 }
