@@ -11,6 +11,17 @@ export interface CartProduct
   quantity: number;
 }
 
+interface ProductWithRestaurant
+  extends Prisma.ProductGetPayload<{
+    include: {
+      restaurant: {
+        select: {
+          deliveryFee: true;
+        };
+      };
+    };
+  }> {}
+
 interface ICartContext {
   products: CartProduct[];
   subtotalPrice: number;
@@ -73,7 +84,7 @@ export function CartProvider({ children }: { children: ReactNode }) {
     return setProducts((prev) => prev.filter((p) => p.id !== productId));
   }
 
-  function addProductToCart(product: Product, quantity: number) {
+  function addProductToCart(product: ProductWithRestaurant, quantity: number) {
     const existingProduct = products.find((p) => p.id === product.id);
     if (existingProduct) {
       return setProducts((prev) =>
@@ -82,10 +93,7 @@ export function CartProvider({ children }: { children: ReactNode }) {
         ),
       );
     } else {
-      setProducts((prev) => [
-        ...prev,
-        { ...product, quantity: quantity } as CartProduct,
-      ]);
+      setProducts((prev) => [...prev, { ...product, quantity: quantity }]);
     }
   }
 
