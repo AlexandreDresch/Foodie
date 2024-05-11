@@ -9,7 +9,11 @@ interface CartItemProps {
   product: CartProduct;
 }
 export default function CartItem({ product }: CartItemProps) {
-  const { decreaseProductQuantity } = useContext(CartContext);
+  const {
+    decreaseProductQuantity,
+    increaseProductQuantity,
+    removeProductFromCart,
+  } = useContext(CartContext);
   return (
     <div className="flex items-center justify-between">
       <div className="flex items-center gap-4">
@@ -26,12 +30,14 @@ export default function CartItem({ product }: CartItemProps) {
           <h3 className="text-xs">{product.name}</h3>
           <div className="flex items-center gap-1">
             <h4 className="text-sm font-semibold">
-              {formatCurrency(calculateProductTotalPrice(product))}
+              {formatCurrency(
+                calculateProductTotalPrice(product) * product.quantity,
+              )}
             </h4>
 
             {product.discountPercentage > 0 && (
               <span className="text-xs text-muted-foreground line-through">
-                {formatCurrency(+product.price)}
+                {+formatCurrency(+product.price) * product.quantity}
               </span>
             )}
           </div>
@@ -40,7 +46,7 @@ export default function CartItem({ product }: CartItemProps) {
             <Button
               size="icon"
               variant="ghost"
-              className="size-8 border border-solid border-muted-foreground transition-colors hover:border-white hover:bg-primary hover:text-white"
+              className="size-7 border border-solid border-muted-foreground transition-colors hover:border-white hover:bg-primary hover:text-white"
               onClick={() => decreaseProductQuantity(product.id)}
             >
               <ChevronLeftIcon size={18} />
@@ -51,7 +57,8 @@ export default function CartItem({ product }: CartItemProps) {
             <Button
               size="icon"
               variant="ghost"
-              className="size-8 border border-solid border-muted-foreground transition-colors hover:border-white hover:bg-primary hover:text-white"
+              className="size-7 border border-solid border-muted-foreground transition-colors hover:border-white hover:bg-primary hover:text-white"
+              onClick={() => increaseProductQuantity(product.id)}
             >
               <ChevronRightIcon size={18} />
             </Button>
@@ -63,6 +70,7 @@ export default function CartItem({ product }: CartItemProps) {
         size="icon"
         variant="ghost"
         className="size-8 border border-solid border-muted-foreground"
+        onClick={() => removeProductFromCart(product.id)}
       >
         <TrashIcon size={18} />
       </Button>
