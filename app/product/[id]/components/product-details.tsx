@@ -6,6 +6,16 @@ import Badge from "@/components/badge";
 import Cart from "@/components/cart";
 import DeliveryInfo from "@/components/delivery-info";
 import ProductList from "@/components/product-list";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from "@/components/ui/alert-dialog";
 import { Button } from "@/components/ui/button";
 import {
   Sheet,
@@ -41,7 +51,9 @@ export default function ProductDetails({
 }: ProductDetailsProps) {
   const [quantity, setQuantity] = useState(1);
   const [isCartOpen, setIsCartOpen] = useState(false);
-  const { addProductToCart } = useContext(CartContext);
+  const [isConfirmationDialogOpen, setIsConfirmationDialogOpen] =
+    useState(false);
+  const { addProductToCart, products } = useContext(CartContext);
 
   function handleDecreaseQuantity() {
     if (quantity > 1) {
@@ -54,7 +66,19 @@ export default function ProductDetails({
   }
 
   function handleAddProductToCart() {
-    addProductToCart(product, quantity);
+    const hasDifferentRestaurant = products.some(
+      (prevProduct) => prevProduct.restaurantId !== product.restaurantId,
+    );
+
+    if (hasDifferentRestaurant) {
+      return setIsConfirmationDialogOpen(true);
+    }
+
+    addToCart({ emptyCart: false });
+  }
+
+  function addToCart({ emptyCart }: { emptyCart: boolean }) {
+    addProductToCart({ product, quantity, emptyCart });
     setIsCartOpen(true);
   }
 
@@ -155,6 +179,27 @@ export default function ProductDetails({
           <Cart />
         </SheetContent>
       </Sheet>
+
+      <AlertDialog
+        open={isConfirmationDialogOpen}
+        onOpenChange={setIsConfirmationDialogOpen}
+      >
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
+            <AlertDialogDescription>
+              This action cannot be undone. This will permanently delete your
+              cart from another restaurant.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel>Cancel</AlertDialogCancel>
+            <AlertDialogAction onClick={() => addToCart({ emptyCart: true })}>
+              Continue
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
     </>
   );
 }

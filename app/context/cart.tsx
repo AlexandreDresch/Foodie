@@ -1,6 +1,6 @@
 "use client";
 
-import { Prisma, Product } from "@prisma/client";
+import { Prisma } from "@prisma/client";
 import { ReactNode, createContext, useMemo, useState } from "react";
 import { calculateProductTotalPrice } from "../utils/price";
 
@@ -22,12 +22,22 @@ interface ProductWithRestaurant
     };
   }> {}
 
+interface addProductToCartProps {
+  product: ProductWithRestaurant;
+  quantity: number;
+  emptyCart?: boolean;
+}
+
 interface ICartContext {
   products: CartProduct[];
   subtotalPrice: number;
   totalPrice: number;
   discountTotal: number;
-  addProductToCart(product: Product, quantity: number): void;
+  addProductToCart({
+    product,
+    quantity,
+    emptyCart,
+  }: addProductToCartProps): void;
   decreaseProductQuantity(productId: string): void;
   increaseProductQuantity(productId: string): void;
   removeProductFromCart(productId: string): void;
@@ -84,8 +94,17 @@ export function CartProvider({ children }: { children: ReactNode }) {
     return setProducts((prev) => prev.filter((p) => p.id !== productId));
   }
 
-  function addProductToCart(product: ProductWithRestaurant, quantity: number) {
+  function addProductToCart({
+    product,
+    quantity,
+    emptyCart,
+  }: addProductToCartProps) {
+    if (emptyCart) {
+      setProducts([]);
+    }
+
     const existingProduct = products.find((p) => p.id === product.id);
+
     if (existingProduct) {
       return setProducts((prev) =>
         prev.map((p) =>
