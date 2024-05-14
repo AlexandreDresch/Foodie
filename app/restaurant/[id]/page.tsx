@@ -6,6 +6,7 @@ import { StarIcon } from "lucide-react";
 import DeliveryInfo from "@/components/delivery-info";
 import Heading from "@/components/heading";
 import ProductList from "@/components/product-list";
+import CartBanner from "../components/cart-banner";
 
 interface RestaurantPageProps {
   params: {
@@ -46,7 +47,7 @@ export default async function RestaurantPage({
     <div>
       <RestaurantImage restaurant={restaurant} />
 
-      <div className="relative z-50 -mt-[1.5rem] flex items-center justify-between rounded-xl bg-white px-5 pt-5">
+      <div className="relative z-40 -mt-[1.5rem] flex items-center justify-between rounded-xl bg-white px-5 pt-5">
         <div className="flex items-center gap-1.5">
           <div className="relative size-8">
             <Image
@@ -98,6 +99,8 @@ export default async function RestaurantPage({
           </div>
         );
       })}
+
+      <CartBanner restaurant={restaurant} />
     </div>
   );
 }
