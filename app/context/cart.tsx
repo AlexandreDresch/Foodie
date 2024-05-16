@@ -6,7 +6,15 @@ import { calculateProductTotalPrice } from "../utils/price";
 
 export interface CartProduct
   extends Prisma.ProductGetPayload<{
-    include: { restaurant: { select: { deliveryFee: true } } };
+    include: {
+      restaurant: {
+        select: {
+          id: true;
+          deliveryFee: true;
+          deliveryTimeMinutes: true;
+        };
+      };
+    };
   }> {
   quantity: number;
 }
@@ -16,7 +24,9 @@ interface ProductWithRestaurant
     include: {
       restaurant: {
         select: {
+          id: true;
           deliveryFee: true;
+          deliveryTimeMinutes: true;
         };
       };
     };
@@ -34,6 +44,7 @@ interface ICartContext {
   totalPrice: number;
   totalQuantity: number;
   discountTotal: number;
+  clearCart: () => void;
   addProductToCart({
     product,
     quantity,
@@ -50,6 +61,7 @@ export const CartContext = createContext<ICartContext>({
   totalPrice: 0,
   totalQuantity: 0,
   discountTotal: 0,
+  clearCart: () => {},
   addProductToCart: () => {},
   decreaseProductQuantity: () => {},
   increaseProductQuantity: () => {},
@@ -103,6 +115,10 @@ export function CartProvider({ children }: { children: ReactNode }) {
     return setProducts((prev) => prev.filter((p) => p.id !== productId));
   }
 
+  function clearCart() {
+    return setProducts([]);
+  }
+
   function addProductToCart({
     product,
     quantity,
@@ -133,6 +149,7 @@ export function CartProvider({ children }: { children: ReactNode }) {
         totalPrice,
         totalQuantity,
         discountTotal,
+        clearCart,
         addProductToCart,
         decreaseProductQuantity,
         increaseProductQuantity,
