@@ -2,7 +2,14 @@
 
 import Image from "next/image";
 import { Button } from "./ui/button";
-import { AlignRight, HomeIcon, LogInIcon, LogOutIcon } from "lucide-react";
+import {
+  AlignRight,
+  HeartIcon,
+  HomeIcon,
+  LogInIcon,
+  LogOutIcon,
+  ScrollTextIcon,
+} from "lucide-react";
 import Link from "next/link";
 import {
   Sheet,
@@ -84,17 +91,46 @@ export default function Header() {
             <Separator />
           </div>
 
-          <div>
-            <Link href="/">
-              <Button
-                size="icon"
-                variant="ghost"
-                className="w-full justify-start space-x-3 rounded-2xl px-2 hover:bg-primary hover:text-white"
-              >
-                <HomeIcon size={20} />
+          <div className="space-y-2">
+            <Button
+              size="icon"
+              variant="ghost"
+              className="w-full justify-start space-x-3 rounded-2xl px-2 hover:bg-primary hover:text-white"
+              asChild
+            >
+              <Link href="/">
+                <HomeIcon size={16} />
                 <span className="block">Home</span>
-              </Button>
-            </Link>
+              </Link>
+            </Button>
+
+            {data?.user && (
+              <>
+                <Button
+                  size="icon"
+                  variant="ghost"
+                  className="w-full justify-start space-x-3 rounded-2xl px-2 hover:bg-primary hover:text-white"
+                  asChild
+                >
+                  <Link href="/orders">
+                    <ScrollTextIcon size={16} />
+                    <span className="block">Orders</span>
+                  </Link>
+                </Button>
+
+                <Button
+                  size="icon"
+                  variant="ghost"
+                  className="w-full justify-start space-x-3 rounded-2xl px-2 hover:bg-primary hover:text-white"
+                  asChild
+                >
+                  <Link href="/favorites">
+                    <HeartIcon size={16} />
+                    <span className="block">Favorite Restaurants</span>
+                  </Link>
+                </Button>
+              </>
+            )}
           </div>
         </SheetContent>
       </Sheet>
