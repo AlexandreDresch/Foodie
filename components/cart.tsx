@@ -54,6 +54,14 @@ export default function Cart() {
             id: data.user.id,
           },
         },
+        products: {
+          createMany: {
+            data: products.map((product) => ({
+              productId: product.id,
+              quantity: product.quantity,
+            })),
+          },
+        },
       });
 
       clearCart();
