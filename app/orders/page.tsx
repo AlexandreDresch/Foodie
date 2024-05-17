@@ -3,6 +3,7 @@ import { authOptions } from "@/lib/auth";
 import { db } from "@/lib/prisma";
 import { getServerSession } from "next-auth";
 import { redirect } from "next/navigation";
+import OrderItem from "./components/order-item";
 
 export default async function OrdersPage() {
   const session = await getServerSession(authOptions);
@@ -15,6 +16,14 @@ export default async function OrdersPage() {
     where: {
       userId: session.user.id,
     },
+    include: {
+      restaurant: true,
+      products: {
+        include: {
+          product: true,
+        },
+      },
+    },
   });
 
   return (
@@ -22,13 +31,11 @@ export default async function OrdersPage() {
       <Header />
 
       <div className="px-5 py-6">
-        <h2 className="font-semibold">Orders</h2>
+        <h2 className="pb-6 font-semibold">Orders</h2>
 
-        <div>
+        <div className="space-y-3">
           {orders.map((order) => (
-            <div key={order.id}>
-              <p>{order.id}</p>
-            </div>
+            <OrderItem order={order} key={order.id} />
           ))}
         </div>
       </div>
