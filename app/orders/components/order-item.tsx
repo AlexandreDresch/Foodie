@@ -1,5 +1,6 @@
 "use client";
 
+import { CartContext } from "@/app/context/cart";
 import { formatCurrency } from "@/app/utils/price";
 import { Avatar, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
@@ -8,6 +9,8 @@ import { Separator } from "@/components/ui/separator";
 import { OrderStatus, Prisma } from "@prisma/client";
 import { ChevronRightIcon } from "lucide-react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { useContext } from "react";
 
 interface OrderItemProps {
   order: Prisma.OrderGetPayload<{
@@ -40,6 +43,20 @@ function getOrderStatusLabelColor(status: OrderStatus) {
 }
 
 export default function OrderItem({ order }: OrderItemProps) {
+  const { addProductToCart } = useContext(CartContext);
+  const router = useRouter();
+
+  function handleRedoOrder() {
+    for (const product of order.products) {
+      addProductToCart({
+        product: { ...product.product, restaurant: order.restaurant },
+        quantity: product.quantity,
+      });
+    }
+
+    router.push(`/restaurant/${order.restaurantId}`);
+  }
+
   return (
     <Card>
       <CardContent className="p-5">
@@ -101,6 +118,7 @@ export default function OrderItem({ order }: OrderItemProps) {
             className="text-xs text-primary"
             size="sm"
             disabled={order.status !== "FINISHED"}
+            onClick={handleRedoOrder}
           >
             Order again
           </Button>
