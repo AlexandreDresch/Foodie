@@ -9,10 +9,9 @@ import {
   SheetContent,
   SheetHeader,
   SheetTitle,
-  SheetTrigger,
 } from "@/components/ui/sheet";
 import { Restaurant } from "@prisma/client";
-import { useContext } from "react";
+import { useContext, useState } from "react";
 
 interface CartBannerProps {
   restaurant: Pick<Restaurant, "id">;
@@ -20,6 +19,7 @@ interface CartBannerProps {
 
 export default function CartBanner({ restaurant }: CartBannerProps) {
   const { products, totalPrice, totalQuantity } = useContext(CartContext);
+  const [isCartOpen, setIsCartOpen] = useState(false);
 
   const restaurantHasProductsOnCart = products.some(
     (p) => p.restaurantId === restaurant.id,
@@ -41,16 +41,13 @@ export default function CartBanner({ restaurant }: CartBannerProps) {
             </span>
           </h3>
         </div>
-
-        <Sheet>
-          <SheetTrigger>
-            <Button>Open Cart</Button>
-          </SheetTrigger>
+        <Button onClick={() => setIsCartOpen(true)}>Open Cart</Button>
+        <Sheet open={isCartOpen} onOpenChange={setIsCartOpen}>
           <SheetContent className="w-[85vw]">
             <SheetHeader className="text-left">
               <SheetTitle>Cart</SheetTitle>
             </SheetHeader>
-            <Cart />
+            <Cart setIsCartOpen={setIsCartOpen} />
           </SheetContent>
         </Sheet>
       </div>
