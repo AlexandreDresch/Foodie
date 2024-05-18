@@ -39,7 +39,7 @@ export default function Header() {
       </Link>
 
       <Sheet>
-        <SheetTrigger>
+        <SheetTrigger asChild>
           <Button
             size="icon"
             variant="outline"
