@@ -9,6 +9,7 @@ import { createOrder } from "@/app/actions/order";
 import { OrderStatus } from "@prisma/client";
 import { useSession } from "next-auth/react";
 import { Loader2 } from "lucide-react";
+import { toast } from "sonner";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -19,13 +20,19 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
 } from "./ui/alert-dialog";
+import { useRouter } from "next/navigation";
 
-export default function Cart() {
+interface CartProps {
+  setIsCartOpen: (isOpen: boolean) => void;
+}
+
+export default function Cart({ setIsCartOpen }: CartProps) {
   const [isLoading, setIsLoading] = useState(false);
   const [isConfirmDialogOpen, setIsConfirmDialogOpen] = useState(false);
   const { products, subtotalPrice, totalPrice, discountTotal, clearCart } =
     useContext(CartContext);
   const { data } = useSession();
+  const router = useRouter();
 
   async function handleFinishOrder() {
     if (!data?.user) {
@@ -65,6 +72,16 @@ export default function Cart() {
       });
 
       clearCart();
+
+      setIsCartOpen(false);
+
+      toast("Order placed successfully!", {
+        description: "You can follow this order on your Orders page.",
+        action: {
+          label: "Orders",
+          onClick: () => router.push("/orders"),
+        },
+      });
     } catch (error) {
       console.error(error);
     } finally {

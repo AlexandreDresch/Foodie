@@ -176,7 +176,7 @@ export default function ProductDetails({
           <SheetHeader className="text-left">
             <SheetTitle>Cart</SheetTitle>
           </SheetHeader>
-          <Cart />
+          <Cart setIsCartOpen={setIsCartOpen} />
         </SheetContent>
       </Sheet>
 
