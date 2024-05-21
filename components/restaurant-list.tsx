@@ -9,6 +9,7 @@ export default async function RestaurantList() {
   const favoriteRestaurants = await db.userFavoriteRestaurant.findMany({
     where: { userId: session?.user.id },
   });
+
   const restaurants = await db.restaurant.findMany({ take: 10 });
 
   return (

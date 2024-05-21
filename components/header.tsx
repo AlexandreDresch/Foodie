@@ -124,7 +124,7 @@ export default function Header() {
                   className="w-full justify-start space-x-3 rounded-2xl px-2 hover:bg-primary hover:text-white"
                   asChild
                 >
-                  <Link href="/favorites">
+                  <Link href="/favorite-restaurants">
                     <HeartIcon size={16} />
                     <span className="block">Favorite Restaurants</span>
                   </Link>
