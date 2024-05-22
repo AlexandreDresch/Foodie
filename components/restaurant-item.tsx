@@ -9,8 +9,8 @@ import Link from "next/link";
 import { toast } from "sonner";
 import useToggleFavoriteRestaurant from "@/app/hooks/use-toggle-favorite-restaurant";
 import { usePathname } from "next/navigation";
-import { useEffect, useState } from "react";
 import { useSession } from "next-auth/react";
+import { isRestaurantFavorite } from "@/app/utils/restaurant";
 
 interface RestaurantItemProps {
   restaurant: Restaurant;
@@ -24,30 +24,27 @@ export default function RestaurantItem({
   userFavoriteRestaurants,
 }: RestaurantItemProps) {
   const { data } = useSession();
-  const [isFavorite, setIsFavorite] = useState(false);
   const pathname = usePathname();
 
-  useEffect(() => {
-    const restaurantIsCurrentlyFavorite = userFavoriteRestaurants.some(
-      (fav) => fav.restaurantId === restaurant.id,
-    );
-    setIsFavorite(restaurantIsCurrentlyFavorite);
-  }, [userFavoriteRestaurants, restaurant.id]);
+  const restaurantIsCurrentlyFavorite = isRestaurantFavorite(
+    restaurant.id,
+    userFavoriteRestaurants,
+  );
 
   const { handleFavoriteToggle } = useToggleFavoriteRestaurant({
     userId: data?.user.id,
     restaurantId: restaurant.id,
-    restaurantIsCurrentlyFavorite: isFavorite,
+    restaurantIsCurrentlyFavorite,
     path: pathname,
     onSuccess: () =>
       toast.success(
-        isFavorite
+        restaurantIsCurrentlyFavorite
           ? "Restaurant has been removed from favorites"
           : "Restaurant has been added to favorites",
       ),
     onFailure: () =>
       toast.error(
-        isFavorite
+        restaurantIsCurrentlyFavorite
           ? "Unable to remove restaurant from favorites, please try again."
           : "Unable to add restaurant to favorites, please try again.",
       ),
@@ -77,7 +74,7 @@ export default function RestaurantItem({
           {data?.user.id && (
             <Button
               size="icon"
-              className={`absolute right-2 top-2 size-7 rounded-full bg-white/30 backdrop-blur-sm ${isFavorite && "bg-primary hover:bg-white/30"}`}
+              className={`absolute right-2 top-2 size-7 rounded-full bg-white/30 backdrop-blur-sm ${restaurantIsCurrentlyFavorite && "bg-primary hover:bg-white/30"}`}
               onClick={favoriteToggle}
             >
               <HeartIcon size={16} className="fill-white" />
