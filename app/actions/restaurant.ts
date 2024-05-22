@@ -3,7 +3,11 @@
 import { db } from "@/lib/prisma";
 import { revalidatePath } from "next/cache";
 
-export async function favoriteRestaurant(userId: string, restaurantId: string) {
+export async function favoriteRestaurant(
+  userId: string,
+  restaurantId: string,
+  path: string,
+) {
   await db.userFavoriteRestaurant.create({
     data: {
       userId,
@@ -11,12 +15,13 @@ export async function favoriteRestaurant(userId: string, restaurantId: string) {
     },
   });
 
-  revalidatePath("/");
+  revalidatePath(path);
 }
 
 export async function unfavoriteRestaurant(
   userId: string,
   restaurantId: string,
+  path: string,
 ) {
   await db.userFavoriteRestaurant.delete({
     where: {
@@ -27,5 +32,5 @@ export async function unfavoriteRestaurant(
     },
   });
 
-  revalidatePath("/");
+  revalidatePath(path);
 }

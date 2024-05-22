@@ -7,6 +7,8 @@ import DeliveryInfo from "@/components/delivery-info";
 import Heading from "@/components/heading";
 import ProductList from "@/components/product-list";
 import CartBanner from "../components/cart-banner";
+import { getServerSession } from "next-auth";
+import { authOptions } from "@/lib/auth";
 
 interface RestaurantPageProps {
   params: {
@@ -39,13 +41,22 @@ export default async function RestaurantPage({
     },
   });
 
+  const session = await getServerSession(authOptions);
+
+  const favoriteRestaurants = await db.userFavoriteRestaurant.findMany({
+    where: { userId: session?.user.id },
+  });
+
   if (!restaurant) {
     return notFound();
   }
 
   return (
     <div>
-      <RestaurantImage restaurant={restaurant} />
+      <RestaurantImage
+        restaurant={restaurant}
+        userFavoriteRestaurants={favoriteRestaurants}
+      />
 
       <div className="relative z-40 -mt-[1.5rem] flex items-center justify-between rounded-xl bg-white px-5 pt-5">
         <div className="flex items-center gap-1.5">

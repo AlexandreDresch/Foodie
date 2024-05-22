@@ -6,63 +6,55 @@ import { BikeIcon, HeartIcon, StarIcon, TimerIcon } from "lucide-react";
 import Image from "next/image";
 import { Button } from "./ui/button";
 import Link from "next/link";
-import {
-  favoriteRestaurant,
-  unfavoriteRestaurant,
-} from "@/app/actions/restaurant";
 import { toast } from "sonner";
+import useToggleFavoriteRestaurant from "@/app/hooks/use-toggle-favorite-restaurant";
+import { usePathname } from "next/navigation";
+import { useEffect, useState } from "react";
+import { useSession } from "next-auth/react";
 
 interface RestaurantItemProps {
-  userId?: string;
   restaurant: Restaurant;
   className?: string;
   userFavoriteRestaurants: UserFavoriteRestaurant[];
 }
 
 export default function RestaurantItem({
-  userId,
   restaurant,
   className,
   userFavoriteRestaurants,
 }: RestaurantItemProps) {
-  const isFavorite = userFavoriteRestaurants.some(
-    (fav) => fav.restaurantId === restaurant.id,
-  );
+  const { data } = useSession();
+  const [isFavorite, setIsFavorite] = useState(false);
+  const pathname = usePathname();
+
+  useEffect(() => {
+    const restaurantIsCurrentlyFavorite = userFavoriteRestaurants.some(
+      (fav) => fav.restaurantId === restaurant.id,
+    );
+    setIsFavorite(restaurantIsCurrentlyFavorite);
+  }, [userFavoriteRestaurants, restaurant.id]);
+
+  const { handleFavoriteToggle } = useToggleFavoriteRestaurant({
+    userId: data?.user.id,
+    restaurantId: restaurant.id,
+    restaurantIsCurrentlyFavorite: isFavorite,
+    path: pathname,
+    onSuccess: () =>
+      toast.success(
+        isFavorite
+          ? "Restaurant has been removed from favorites"
+          : "Restaurant has been added to favorites",
+      ),
+    onFailure: () =>
+      toast.error(
+        isFavorite
+          ? "Unable to remove restaurant from favorites, please try again."
+          : "Unable to add restaurant to favorites, please try again.",
+      ),
+  });
 
   function favoriteToggle() {
-    if (isFavorite) {
-      handleUnfavorite();
-    } else {
-      handleFavorite();
-    }
-  }
-
-  async function handleFavorite() {
-    if (!userId) {
-      return;
-    }
-
-    try {
-      await favoriteRestaurant(userId, restaurant.id);
-      toast.success("Restaurant has been added to favorites");
-    } catch (error) {
-      toast.error("Unable to add restaurant to favorites, please try again.");
-    }
-  }
-
-  async function handleUnfavorite() {
-    if (!userId) {
-      return;
-    }
-
-    try {
-      await unfavoriteRestaurant(userId, restaurant.id);
-      toast.success("Restaurant has been removed from favorites");
-    } catch (error) {
-      toast.error(
-        "Unable to remove restaurant from favorites, please try again.",
-      );
-    }
+    handleFavoriteToggle();
   }
 
   return (
@@ -82,7 +74,7 @@ export default function RestaurantItem({
             <span className="text-xs font-semibold text-black">5.0</span>
           </div>
 
-          {userId && (
+          {data?.user.id && (
             <Button
               size="icon"
               className={`absolute right-2 top-2 size-7 rounded-full bg-white/30 backdrop-blur-sm ${isFavorite && "bg-primary hover:bg-white/30"}`}
