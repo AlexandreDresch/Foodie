@@ -34,7 +34,6 @@ export default async function FavoriteRestaurants() {
                 key={restaurant.id}
                 restaurant={restaurant}
                 className="max-w-full"
-                userId={session.user.id}
                 userFavoriteRestaurants={userFavoriteRestaurants}
               />
             ))
