@@ -35,9 +35,9 @@ export default async function CategoryPage({
   return (
     <>
       <Header />
-      <div className="p-5">
+      <div className="p-5 lg:px-28">
         <Heading title={category.name} className="mb-5" />
-        <div className="grid grid-cols-2 gap-2">
+        <div className="grid grid-cols-2 gap-2 sm:grid-cols-3 md:grid-cols-4 md:gap-4 lg:grid-cols-5 xl:grid-cols-6">
           {category.products.map((product) => (
             <ProductItem key={product.id} product={product} />
           ))}
