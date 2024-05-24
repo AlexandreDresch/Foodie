@@ -33,7 +33,7 @@ export default function Header() {
     signIn();
   }
   return (
-    <div className="flex justify-between px-5 pt-6">
+    <div className="flex justify-between px-5 pt-6 lg:px-28">
       <Link href="/">
         <Image src="/logo.svg" alt="Foodie" height={30} width={100} priority />
       </Link>

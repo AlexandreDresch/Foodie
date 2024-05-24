@@ -4,18 +4,18 @@ interface BannerProps {
   percentage: number;
   text: string;
   image: string;
-  color: string;
+  className: string;
 }
 
 export default function Banner({
   percentage,
   image,
-  color,
+  className,
   text,
 }: BannerProps) {
   return (
     <div
-      className={`flex w-full items-center justify-around rounded-md ${color} p-5 lg:p-10`}
+      className={`flex w-full items-center justify-around rounded-md ${className} p-5 lg:p-10`}
     >
       <div className="text-white">
         <div className="flex justify-between">

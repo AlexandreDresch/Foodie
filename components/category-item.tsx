@@ -10,7 +10,7 @@ export default function CategoryItem({ category }: CategoryItemProps) {
   return (
     <Link
       href={`/category/${category.id}/products`}
-      className="flex items-center gap-3 rounded-full bg-white px-4 py-3 shadow-md"
+      className="flex items-center justify-center gap-3 rounded-full bg-white px-4 py-3 shadow-md"
     >
       <Image
         src={category.imageUrl}
