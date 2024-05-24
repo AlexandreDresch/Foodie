@@ -16,9 +16,9 @@ export default async function RecommendedRestaurants() {
   return (
     <>
       <Header />
-      <div className="p-5">
-        <Heading title="Best Restaurants" className="mb-5" />
-        <div className="flex w-full flex-col space-y-4">
+      <div className="p-5 lg:px-28">
+        <Heading title="Best Restaurants" />
+        <div className="mt-5 flex w-full flex-col space-y-4 md:grid md:grid-cols-2 md:gap-4 md:space-y-0 lg:grid-cols-3">
           {restaurants.map((restaurant) => (
             <RestaurantItem
               userFavoriteRestaurants={favoriteRestaurants}
