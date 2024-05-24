@@ -25,9 +25,9 @@ export default async function FavoriteRestaurants() {
   return (
     <>
       <Header />
-      <div className="p-5">
+      <div className="p-5 lg:px-28">
         <Heading title="Favorite Restaurants" className="mb-5" />
-        <div className="flex w-full flex-col space-y-4">
+        <div className="mt-5 flex w-full flex-col space-y-4 md:grid md:grid-cols-2 md:gap-4 md:space-y-0 lg:grid-cols-3">
           {userFavoriteRestaurants.length > 0 ? (
             userFavoriteRestaurants.map(({ restaurant }) => (
               <RestaurantItem
