@@ -56,16 +56,16 @@ export default function RestaurantImage({
   }
 
   return (
-    <div className="relative h-[215px] w-full">
+    <div className="relative h-[215px] w-full md:h-[500px] md:w-1/2">
       <Image
         src={restaurant.imageUrl}
         alt={restaurant.name}
         fill
-        className="object-cover"
+        className="object-cover md:rounded-lg"
       />
 
       <Button
-        className="absolute left-4 top-4 rounded-full bg-white text-foreground transition-colors hover:text-white"
+        className="absolute left-4 top-4 rounded-full bg-white text-foreground transition-colors hover:text-white md:hidden"
         size="icon"
         onClick={handleGoBack}
       >
