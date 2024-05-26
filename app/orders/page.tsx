@@ -30,7 +30,7 @@ export default async function OrdersPage() {
     <>
       <Header />
 
-      <div className="px-5 py-6">
+      <div className="px-5 py-6 lg:px-28">
         <h2 className="pb-6 font-semibold">Orders</h2>
 
         <div className="space-y-3">
