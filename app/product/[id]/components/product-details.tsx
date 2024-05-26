@@ -5,6 +5,7 @@ import { calculateProductTotalPrice, formatCurrency } from "@/app/utils/price";
 import Badge from "@/components/badge";
 import Cart from "@/components/cart";
 import DeliveryInfo from "@/components/delivery-info";
+import Heading from "@/components/heading";
 import ProductList from "@/components/product-list";
 import {
   AlertDialog,
@@ -30,6 +31,7 @@ import {
   ShoppingCartIcon,
 } from "lucide-react";
 import Image from "next/image";
+import Link from "next/link";
 import { useContext, useState } from "react";
 
 interface ProductDetailsProps {
@@ -84,7 +86,7 @@ export default function ProductDetails({
 
   return (
     <>
-      <div className="relative z-50 -mt-[1.5rem] rounded-t-xl bg-white py-5">
+      <div className="relative z-50 -mt-[1.5rem] rounded-t-xl bg-white py-5 md:-mt-0 md:w-1/2 md:p-0">
         <div className="flex items-center gap-2 px-5">
           <div className="relative size-6">
             <Image
@@ -95,9 +97,12 @@ export default function ProductDetails({
             />
           </div>
 
-          <span className="text-xs text-muted-foreground">
+          <Link
+            className="text-xs text-muted-foreground transition-colors duration-300 hover:text-primary"
+            href={`/restaurant/${product.restaurantId}`}
+          >
             {product.restaurant.name}
-          </span>
+          </Link>
         </div>
 
         <h1 className="mb-2 mt-1 px-5 text-xl font-semibold">{product.name}</h1>
@@ -148,15 +153,13 @@ export default function ProductDetails({
           <DeliveryInfo restaurant={product.restaurant} />
         </div>
 
-        <div className="mt-6 space-y-3 px-5">
-          <h3 className="font-semibold">Description</h3>
+        <div className="mt-6 h-[43%] space-y-3 px-5">
+          <Heading title="Description" />
           <p className="text-sm text-muted-foreground">{product.description}</p>
         </div>
 
-        <div className="mt-6 space-y-3">
-          <h3 className="px-5 font-semibold">
-            More from {product.restaurant.name}
-          </h3>
+        <div className="mt-6 space-y-3 px-5 md:hidden">
+          <Heading title={`More from ${product.restaurant.name}`} />
           <ProductList products={complementaryProducts} />
         </div>
 
