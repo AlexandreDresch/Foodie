@@ -19,7 +19,10 @@ interface ProductItemProps {
 
 export default function ProductItem({ product }: ProductItemProps) {
   return (
-    <Link className="w-full lg:max-w-52" href={`/product/${product.id}`}>
+    <Link
+      className="w-[130px] min-w-[130px] sm:w-[150px] sm:min-w-[150px] "
+      href={`/product/${product.id}`}
+    >
       <div className="w-full space-y-2">
         <div className="relative aspect-square w-full">
           <Image
