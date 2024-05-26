@@ -21,8 +21,11 @@ export default async function ProductsPage({
   }
 
   const complementaryProducts = await db.product.findMany({
-    where: { restaurant: { id: product.restaurant.id } },
-    take: 5,
+    where: {
+      restaurant: { id: product.restaurant.id },
+      id: { not: product.id },
+    },
+    take: 10,
     include: { restaurant: true },
   });
 
