@@ -1,36 +1,54 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+<h1 align="center">
+  Foodie
+</h1>
 
-## Getting Started
+![cover](.github/image.png?style=flat)
 
-First, run the development server:
+### Foodie connects you to a wide array of local restaurants, offering a seamless and user-friendly experience to satisfy your cravings. Whether you're looking for a quick bite or a gourmet meal, Foodie provides a diverse selection of cuisines, and easy-to-use navigation, making food delivery effortless and enjoyable.
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+## Features
+
+- **User Authentication:** Seamlessly sign up or log in using your Google account through NextAuth, ensuring a secure and hassle-free experience.
+
+- **Browse by Category:** Explore our extensive collection of dishes conveniently categorized to help you find the perfect fit for your mood.
+
+- **Product Pages:** Dive into detailed product pages to get a closer look at each dish, including description, images, and price.
+
+- **Restaurants Page:** Dive into detailed restaurant pages to get a closer look at each dish option available. You can also see the delivery fee, delivery time, and add the restaurant to your favorites.
+
+- **Add to Cart:** Easily add your chosen products to your shopping cart with just one click.
+
+### Click [here](foodie-rosy-two.vercel.app) to access the project.
+
+## Starting the project
+Clone the repository:
+```cl
+git clone https://github.com/AlexandreDresch/Foodie.git
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Use **npm install** to install project dependencies:
+```cl
+cd Foodie
+npm install
+```
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+Populate `.env` file based on `.env.EXAMPLE`.
+<br />
+Then start the project.
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+```cl
+npm run dev
+```
+Open http://localhost:3000 in your browser to start exploring Foodie!
 
-## Learn More
+## Technologies
 
-To learn more about Next.js, take a look at the following resources:
+-   [ ] Next.js
+-   [ ] Typescript
+-   [ ] TailwindCSS
+-   [ ] NextAuth
+-   [ ] Shadcn/ui
+-   [ ] Prisma 
+-   [ ] React Hook Form
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+<br />
