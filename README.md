@@ -18,7 +18,7 @@
 
 - **Add to Cart:** Easily add your chosen products to your shopping cart with just one click.
 
-### Click [here](foodie-rosy-two.vercel.app) to access the project.
+### Click [here](https://foodie-rosy-two.vercel.app) to access the project.
 
 ## Starting the project
 Clone the repository:
